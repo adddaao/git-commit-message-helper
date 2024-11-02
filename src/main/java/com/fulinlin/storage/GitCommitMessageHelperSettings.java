@@ -77,6 +77,7 @@ public class GitCommitMessageHelperSettings implements PersistentStateComponent<
     private void loadDefaultCentralSettings() {
         centralSettings = new CentralSettings();
         try {
+            // TODO 默认的配置
             centralSettings.setTypeDisplayStyle(TypeDisplayStyleEnum.CHECKBOX);
             centralSettings.setTypeDisplayNumber(-1);
             centralSettings.setSkipCiDefaultValue("[skip ci]");
@@ -88,9 +89,9 @@ public class GitCommitMessageHelperSettings implements PersistentStateComponent<
             centralSettings.getHidden().setScope(Boolean.FALSE);
             centralSettings.getHidden().setSubject(Boolean.FALSE);
             centralSettings.getHidden().setBody(Boolean.FALSE);
-            centralSettings.getHidden().setClosed(Boolean.FALSE);
-            centralSettings.getHidden().setChanges(Boolean.FALSE);
-            centralSettings.getHidden().setSkipCi(Boolean.FALSE);
+            centralSettings.getHidden().setClosed(Boolean.TRUE);
+            centralSettings.getHidden().setChanges(Boolean.TRUE);
+            centralSettings.getHidden().setSkipCi(Boolean.TRUE);
         } catch (Exception e) {
             log.error("loadDefaultCentralSettings failed", e);
         }
