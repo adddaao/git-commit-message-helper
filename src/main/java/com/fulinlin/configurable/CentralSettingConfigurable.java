@@ -3,7 +3,6 @@ package com.fulinlin.configurable;
 import com.fulinlin.storage.GitCommitMessageHelperSettings;
 import com.fulinlin.ui.central.CentralSettingPanel;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
