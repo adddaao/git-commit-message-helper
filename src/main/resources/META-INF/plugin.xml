@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>commit-message-helper-idea-plugin</id>
-    <name>Git Commit Message Helper</name>
+    <name>Git Commit Message Helper(Rzt Build)</name>
     <vendor email="fulinlin9527@outlook.com" url="https://github.com/AutismSuperman">FuLinLin</vendor>
     <version>1.4.1</version>
 
