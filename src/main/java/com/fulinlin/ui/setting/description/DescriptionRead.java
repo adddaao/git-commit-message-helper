@@ -1,7 +1,6 @@
 package com.fulinlin.ui.setting.description;
 
 import com.fulinlin.utils.VelocityUtils;
-import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

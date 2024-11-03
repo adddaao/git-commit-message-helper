@@ -100,10 +100,9 @@ public class GitMessageParserUtils {
 				.collect(Collectors.joining("|"));
 
 		// 构建新的正则表达式
-		// 主要修复了之前排除逻辑中的混乱
-		String regex = "^\\w+(?:\\([^)]*\\))?:\\s*.+\\n+([\\s\\S]*?)(?=\\n*BREAKING CHANGE:|\\n*Closes |\\n*(?!"
-				+ ignoreTagsPattern
-				+ ")$)";
+		// 捕获提交类型和标题之后的内容，直到出现 BREAKING CHANGE: 或 Closes 或者忽略的标签
+		String regex = "^\\w+(?:\\([^)]*\\))?:\\s*.+\\n+([\\s\\S]*?)(?=\\n*BREAKING CHANGE:|\\n*Closes |\\n*(?="
+				+ ignoreTagsPattern + ")|$)";
 
 		Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 		Matcher matcher = pattern.matcher(message);
@@ -113,5 +112,4 @@ public class GitMessageParserUtils {
 		}
 		return "";
 	}
-
 }
