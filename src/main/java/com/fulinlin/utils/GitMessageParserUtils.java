@@ -7,7 +7,6 @@ import com.intellij.openapi.components.ServiceManager;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class GitMessageParserUtils {
 	protected GitCommitMessageHelperSettings settings;
@@ -94,17 +93,18 @@ public class GitMessageParserUtils {
 	}
 
 	private static String parseBody(String message, List<String> ignoreTags) {
-		// 使用 Pattern.quote 确保标签中的特殊字符不会影响正则匹配
-		String ignoreTagsPattern = ignoreTags.stream()
-				.map(Pattern::quote)
-				.collect(Collectors.joining("|"));
+		// 提取 scope, type, 和 subject
+		String scope = parseScope(message);
+		String type = parseType(message);
+		String subject = parseSubject(message);
 
-		// 构建新的正则表达式
-		// 捕获提交类型和标题之后的内容，直到出现 BREAKING CHANGE: 或 Closes 或者忽略的标签
-		String regex = "^\\w+(?:\\([^)]*\\))?:\\s*.+\\n+([\\s\\S]*?)(?=\\n*BREAKING CHANGE:|\\n*Closes |\\n*(?="
-				+ ignoreTagsPattern + ")|$)";
+		// 替换第一行内容
+		message = message.replace(type + "(" + scope + "): " + subject + "\n\n", "");
 
-		Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+		// 构造正则表达式：从 feat(123): 123 后提取所有正文内容，直到出现忽略的标签或文件结束
+		String regex = "^(.*?)(?:\\n\\n|$)";
+
+		Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 		Matcher matcher = pattern.matcher(message);
 
 		if (matcher.find()) {
@@ -112,4 +112,33 @@ public class GitMessageParserUtils {
 		}
 		return "";
 	}
+
+
+	public static void main(String[] args) {
+		String message = "feat(123): 123\n\n1231231\n123123\n12312\n31\n23\n123\n12\n3123";
+
+
+		// 提取 scope, type, 和 subject
+		String scope = parseScope(message);
+		String type = parseType(message);
+		String subject = parseSubject(message);
+
+		// 替换第一行内容
+		message = message.replace(type + "(" + scope + "): " + subject + "\n\n", "");
+
+		// 构造正则表达式：从 feat(123): 123 后提取所有正文内容，直到出现忽略的标签或文件结束
+		String regex = "^(.*?)(?:\\n\\n|$)";
+
+		Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+		Matcher matcher = pattern.matcher(message);
+
+		if (matcher.find()) {
+			System.out.println("Matched content: " + matcher.group(1).trim());
+		} else {
+			System.out.println("No match found.");
+		}
+	}
+
+
+
 }
